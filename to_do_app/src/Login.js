@@ -33,7 +33,6 @@ const Login = ({ setToken }) => {
 
   return (
     <form onSubmit={handleLogin}>
-      <h2>Login</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {message && <p style={{ color: 'green' }}>{message}</p>}
       <input

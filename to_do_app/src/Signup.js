@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const SignUp = ({ setToken }) => {
+const Signup = ({ setToken }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -33,7 +33,6 @@ const SignUp = ({ setToken }) => {
 
   return (
     <form onSubmit={handleSignUp}>
-      <h2>Sign Up</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {message && <p style={{ color: 'green' }}>{message}</p>}
       <input
@@ -53,4 +52,4 @@ const SignUp = ({ setToken }) => {
   );
 };
 
-export default SignUp;
+export default Signup;

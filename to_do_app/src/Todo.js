@@ -5,7 +5,6 @@ const Todo = ({ token }) => {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState('');
 
-  // Fetch all todos when the component mounts
   useEffect(() => {
     const fetchTodos = async () => {
       try {
@@ -20,11 +19,8 @@ const Todo = ({ token }) => {
     fetchTodos();
   }, [token]);
 
-  // Handle creating a new todo
   const handleCreateTodo = async (e) => {
     e.preventDefault();
-    if (!newTodo.trim()) return; // Ensure the todo is not empty
-
     try {
       const response = await axios.post(
         'http://localhost:5000/todos',
@@ -32,62 +28,46 @@ const Todo = ({ token }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setTodos([...todos, response.data]);
-      setNewTodo(''); // Clear input field after adding
+      setNewTodo('');
     } catch (error) {
       console.error('Create todo error:', error);
     }
   };
 
-  // Handle deleting a specific todo
   const handleDeleteTodo = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/todos/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setTodos(todos.filter((todo) => todo.id !== id)); // Use correct id for comparison
+      setTodos(todos.filter((todo) => todo.id !== id));
     } catch (error) {
       console.error('Delete todo error:', error);
     }
   };
 
-  // Handle updating a todo
-  const handleUpdateTodo = async (id, updatedText) => {
-    if (!updatedText.trim()) return; // Ensure the todo is not empty
-    try {
-      const response = await axios.put(
-        `http://localhost:5000/todos/${id}`,
-        { text: updatedText },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setTodos(
-        todos.map((todo) => (todo.id === id ? response.data : todo))
-      );
-    } catch (error) {
-      console.error('Update todo error:', error);
-    }
-  };
-
   return (
-    <div>
-      <h2>Your To-Do List</h2>
-      <form onSubmit={handleCreateTodo}>
+    <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden mt-10">
+      <h2 className="text-center text-2xl font-bold py-4">Your To-Do List</h2>
+      <form className="flex justify-between p-4" onSubmit={handleCreateTodo}>
         <input
           type="text"
           placeholder="New To-Do"
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
+          className="flex-grow border border-gray-300 rounded-lg px-4 py-2 mr-2"
         />
-        <button type="submit">Add</button>
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">Add</button>
       </form>
-      <ul>
+      <ul className="list-none">
         {todos.map((todo) => (
-          <li key={todo.id}>
-            <input
-              type="text"
-              value={todo.text}
-              onChange={(e) => handleUpdateTodo(todo.id, e.target.value)}
-            />
-            <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+          <li key={todo.id} className="flex justify-between items-center border-b border-gray-200 p-4">
+            <span>{todo.text}</span>
+            <button 
+              onClick={() => handleDeleteTodo(todo.id)} 
+              className="bg-red-500 text-white px-2 py-1 rounded-lg"
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>

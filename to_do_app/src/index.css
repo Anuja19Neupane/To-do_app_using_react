@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+body {
+  @apply bg-gray-100; /* Sets a light gray background for the entire app */
+  @apply text-gray-800; /* Sets a default text color */
+}
+
+.app-container {
+  @apply max-w-4xl mx-auto p-6; /* Centers the app with padding */
+}
+
+.auth-container {
+  @apply space-y-4; /* Adds vertical spacing between child elements */
+}
+
+.logout-button {
+  @apply bg-red-500 text-white py-2 px-4 rounded; /* Styled logout button */
+}
+
+.logout-button:hover {
+  @apply bg-red-600; /* Darker red on hover */
+}
+
+.todo-container {
+  @apply mt-6; /* Adds margin to the top of the todo section */
+}
+
+.todo-list {
+  @apply list-none p-0; /* Removes default list styles */
+}
+
+.todo-item {
+  @apply flex justify-between items-center p-4 border-b border-gray-300; /* Flex layout for todo items */
+}
+
+.delete-button {
+  @apply bg-red-500 text-white py-1 px-3 rounded; /* Styled delete button */
+}
+
+.delete-button:hover {
+  @apply bg-red-600; /* Darker red on hover */
+}
+
+/* New styles for input fields */
+input {
+  @apply border rounded p-2; /* Input styles */
+  @apply w-1/2; /* Set width to 50% */
+}
+
+/* Button styles for Sign Up and Login */
+button {
+  @apply bg-blue-500 text-white py-2 px-4 rounded; /* Button appearance */
+  @apply hover:bg-blue-600; /* Darker blue on hover */
+}
+
+/* Adjust spacing between email and password inputs */
+input[type="password"] {
+  margin-top: 10px; /* Gap between email and password inputs */
+}
+
+.welcome-message {
+  font-size: 1.5rem; /* Increase the font size */
+  font-weight: bold; /* Make it bold */
+  color: #1f2937; /* Change to a color of your choice */
+  margin-bottom: 1rem; /* Add space below the welcome message */
+}
+
+.bold-text {
+  font-weight: bold; /* Make text bold */
+  display: block; /* Ensure each text appears on a new line */
+  margin: 10px 0; /* Add margin for spacing */
+}

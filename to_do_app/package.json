@@ -11,12 +11,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "A simple To-Do application built with React and Tailwind CSS",
   "dependencies": {
+    "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
+    "postcss": "^8.4.47",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "tailwindcss": "^3.4.13"
   },
   "browserslist": [
     ">0.2%",

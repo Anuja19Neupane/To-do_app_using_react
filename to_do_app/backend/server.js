@@ -2,18 +2,49 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
-const PORT = 5000;
+const PORT = 5000; // Changed port to 5001
 const SECRET_KEY = 'your_secret_key'; // Change this to a secure key in a real application
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// Sample users and todos storage
+// Users storage (could be a database in real applications)
 const users = [];
-const todos = {}; // Store todos by user email
+
+// Load todos from JSON file
+const loadTodos = () => {
+  const filePath = path.join(__dirname, 'todos.json');
+  if (fs.existsSync(filePath)) {
+    try {
+      const data = fs.readFileSync(filePath, 'utf-8');
+      console.log('Todos loaded:', data); // Debugging log
+      return JSON.parse(data);
+    } catch (err) {
+      console.error('Error reading todos file:', err);
+      return {};
+    }
+  }
+  return {}; // Return an empty object if the file does not exist
+};
+
+// Save todos to JSON file
+const saveTodos = (todos) => {
+  const filePath = path.join(__dirname, 'todos.json');
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(todos, null, 2));
+    console.log('Todos saved:', todos); // Debugging log
+  } catch (err) {
+    console.error('Error writing todos file:', err);
+  }
+};
+
+// Load todos from file at server startup
+let todos = loadTodos(); // Load existing todos
 
 // Middleware to authenticate user
 const authenticateJWT = (req, res, next) => {
@@ -21,7 +52,7 @@ const authenticateJWT = (req, res, next) => {
   if (!token) {
     return res.sendStatus(403); // Forbidden
   }
-  
+
   jwt.verify(token, SECRET_KEY, (err, user) => {
     if (err) {
       return res.sendStatus(403); // Forbidden
@@ -49,6 +80,7 @@ app.post('/signup', (req, res) => {
   // Save user
   users.push({ email, password });
   todos[email] = []; // Initialize an empty todo array for the new user
+  saveTodos(todos); // Save the new state of todos
   res.status(200).json({ message: 'Signup successful', token: generateToken({ email }) });
 });
 
@@ -95,6 +127,7 @@ app.post('/todos', authenticateJWT, (req, res) => {
 
   const newTodo = { id: Date.now(), text }; // Simple ID generation
   todos[userEmail].push(newTodo); // Add todo to the user's array
+  saveTodos(todos); // Save updated todos
   res.status(201).json(newTodo); // Send back the created todo
 });
 
@@ -105,6 +138,7 @@ app.delete('/todos/:id', authenticateJWT, (req, res) => {
 
   // Filter todos for the user
   todos[userEmail] = todos[userEmail].filter(todo => todo.id !== Number(id));
+  saveTodos(todos); // Save updated todos
   res.status(204).send(); // No content
 });
 
@@ -122,6 +156,7 @@ app.put('/todos/:id', authenticateJWT, (req, res) => {
 
   // Update the todo text
   todos[userEmail][todoIndex].text = text;
+  saveTodos(todos); // Save updated todos
   res.json(todos[userEmail][todoIndex]); // Return the updated todo
 });
 

@@ -1,0 +1,16 @@
+.todo-list {
+  @apply list-none p-0; /* Remove bullet points and default padding */
+}
+
+.todo-item {
+  @apply flex justify-between items-center p-4 border-b border-gray-300; /* Flex layout for todo items */
+}
+
+.delete-button {
+  @apply bg-red-500 text-white py-1 px-3 rounded; /* Styled delete button */
+  @apply transition duration-300 ease-in-out; /* Transition effect */
+}
+
+.delete-button:hover {
+  @apply bg-red-600; /* Darker red on hover */
+}
