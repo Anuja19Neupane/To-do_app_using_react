@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; // useState: to define a state variable (token)
+          // token is required for user authentication
 import Signup from './Signup';
 import Login from './Login'; 
 import Todo from './Todo'; 
